@@ -31,18 +31,22 @@
         <h1 class="title mt-2 mb-4">Centro de trabajo</h1>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-proposed-tab" data-toggle="tab" href="#nav-proposed"
-                    role="tab" aria-controls="nav-proposed" aria-selected="true">Propuestos</a>
+                <a class="nav-item nav-link active" id="nav-need-work-tab" data-toggle="tab" href="#nav-need-work"
+                    role="tab" aria-controls="nav-need-work" aria-selected="true">Necesitan trabajo</a>
+                <a class="nav-item nav-link" id="nav-proposed-tab" data-toggle="tab" href="#nav-proposed" role="tab"
+                    aria-controls="nav-proposed" aria-selected="false">Propuestos</a>
                 <a class="nav-item nav-link" id="nav-closed-tab" data-toggle="tab" href="#nav-closed" role="tab"
                     aria-controls="nav-closed" aria-selected="false">Cerrados</a>
-                <a class="nav-item nav-link" id="nav-need-work-tab" data-toggle="tab" href="#nav-need-work" role="tab"
-                    aria-controls="nav-need-work" aria-selected="false">Necesitan trabajo</a>
                 <a class="nav-item nav-link" id="nav-following-tab" data-toggle="tab" href="#nav-following" role="tab"
                     aria-controls="nav-following" aria-selected="false">En seguimiento</a>
             </div>
         </nav>
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-proposed" role="tabpanel" aria-labelledby="nav-proposed-tab">
+        <div class="tab-content mt-3" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-need-work" role="tabpanel"
+                aria-labelledby="nav-need-work-tab">
+
+            </div>
+            <div class="tab-pane fade" id="nav-proposed" role="tabpanel" aria-labelledby="nav-proposed-tab">
                 <table id="proposed" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
@@ -1661,14 +1665,13 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="tab-pane fade" id="nav-need-work" role="tabpanel" aria-labelledby="nav-need-work-tab">
 
-            </div>
             <div class="tab-pane fade" id="nav-followed" role="tabpanel" aria-labelledby="nav-followed-tab">
 
             </div>
         </div>
     </main>
+
     <!-- /.container -->
 
     <%- include('helpers/footer'); %>
