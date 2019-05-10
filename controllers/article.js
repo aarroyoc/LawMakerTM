@@ -21,8 +21,8 @@ exports.ArticleController = class ArticleController {
         }
         let db = req.mongo;
         let articleId = req.params.id;
-        let articles = db.collections("articles");
-        articles.findOne({id: articleId},(err,res)=>{
+        let articles = db.collection("articles");
+        articles.findOne({id: articleId},(err,ttt)=>{
             let texts = db.collection("texts");
             texts.find({articleId: articleId}).toArray((err,texts)=>{
                 res.render("article", {
@@ -56,7 +56,7 @@ exports.ArticleController = class ArticleController {
         }
         let db = req.mongo;
         let articleId = req.params.id;
-        let articles = db.collections("articles");
+        let articles = db.collection("articles");
         articles.updateOne({id: articleId},{
             $push: { "comments" : {
                 text: req.body.text,
