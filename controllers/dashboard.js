@@ -13,7 +13,7 @@ exports.DashboardController = class DashboardController {
     constructor(app){
         app.get("/dashboard",this.dashboard);
         app.post("/proposeArticle",this.proposeArticle);
-        app.get("/notifyTo/:id",this.notifyTo);
+        app.get("/notifyTo/:id/:sub",this.notifyTo);
     }
     dashboard(req,res){
         if(!req.session.mail){
@@ -40,8 +40,9 @@ exports.DashboardController = class DashboardController {
         }
         let db = req.mongo;
         let articles = db.collection("articles");
+        let articleId = uuidv4();
         articles.insertOne({
-            "id" : uuidv4(),
+            "id" : articleId,
             "status" : "proposed",
             "starred_by" : [],
             "tags" : [],
@@ -53,7 +54,7 @@ exports.DashboardController = class DashboardController {
         },(err,res)=>{
 
         });
-        res.redirect("/article/:id");
+        res.redirect(`/article/${articleId}`);
     }
 
     notifyTo(req,res){
@@ -61,13 +62,23 @@ exports.DashboardController = class DashboardController {
             res.status(403).send("No autorizado");
         }
         let id = req.params.id;
+        let sub = req.params.sub;
         let db = req.mongo;
         let articles = db.collection("articles");
-        articles.updateOne({"id": id},{ $push : {
-            "starred_by" : req.session.mail
-        }},(err,ok)=>{
+        if(sub == "follow"){
+            articles.updateOne({"id": id},{ $push : {
+                "starred_by" : req.session.mail
+            }},(err,ok)=>{
 
-        });
+            });
+        }
+        if(sub == "unfollow"){
+            articles.updateOne({"id":id},{$pull: {
+                "starred_by" : req.session.mail
+            }},(err,ok)=>{
+
+            });
+        }
         res.redirect("/dashboard");
 
     }
