@@ -25,7 +25,9 @@ exports.ArticleController = class ArticleController {
         articles.findOne({id: articleId},(err,res)=>{
             let texts = db.collection("texts");
             texts.find({articleId: articleId}).toArray((err,texts)=>{
-                // RENDERIZAR
+                res.render("article", {
+                    article: texts
+                });
             });    
         });
     }
