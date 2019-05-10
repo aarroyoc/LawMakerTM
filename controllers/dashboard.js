@@ -21,13 +21,18 @@ exports.DashboardController = class DashboardController {
         }
         let db = req.mongo;
         let articles = db.collection("articles");
-        res.send("OK");
 
         articles.find({"status" : "open"}).toArray((err,openArticles)=>{
             articles.find({"status" : "close"}).toArray((err,closedArticles)=>{
                 articles.find({"status" : "proposed"}).toArray((err,proposedArticles)=>{
                     articles.find({"starred_by" : req.session.mail}).toArray((err,starredArticles)=>{
                         // RENDERIZAR
+                        res.render("dashboard",{
+                            openArticles: openArticles,
+                            closedArticles: closedArticles,
+                            proposedArticles: proposedArticles,
+                            starredArticles: starredArticles
+                        });
                     });
                 })
             });
