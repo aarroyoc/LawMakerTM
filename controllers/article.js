@@ -56,7 +56,7 @@ exports.ArticleController = class ArticleController {
         }
         let db = req.mongo;
         let articleId = req.params.id;
-        let articles = db.collections("articles");
+        let articles = db.collection("articles");
         articles.updateOne({id: articleId},{
             $push: { "comments" : {
                 text: req.body.text,
