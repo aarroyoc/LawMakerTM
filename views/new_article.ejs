@@ -1,0 +1,57 @@
+<%- include('helpers/header', {title: "Centro de trabajo"}); %>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Law Maker&trade;</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <!--
+                <ul class="navbar-nav mr-auto">
+                    
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Inicio </a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <button type="button" class="btn btn-outline-primary">
+                        Iniciar sesión
+                    </button>
+                </form>
+                -->
+            </div>
+        </div>
+    </nav>
+
+    <main role="main" class="container">
+        <h1 class="title mt-2 mb-4">Propuesta de artículo</h1>
+        <form action="/proposeArticle" method="POST">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Nombre corto</span>
+                </div>
+                <input type="text" name="title" class="form-control" placeholder="Sobre ...">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Etiquetas</span>
+                </div>
+                <input type="text" name="tags" class="form-control" placeholder="test,duracion,...">
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Motivación del artículo</span>
+                </div>
+                <textarea name="motivation" class="form-control" aria-label="With textarea"></textarea>
+            </div>
+            <button type="submit" class="mt-4 btn btn-primary">Crear propuesta de artículo</button>
+        </form>
+    </main>
+
+    <!-- /.container -->
+
+    <%- include('helpers/footer'); %>
