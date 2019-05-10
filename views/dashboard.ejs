@@ -3,7 +3,7 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Law Maker&trade;</a>
+            <a class="navbar-brand" href="/dashboard">Law Maker&trade;</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                 aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -57,7 +57,7 @@
                     <tbody>
                         <% for(let article of openArticles){ %>
                         <tr>
-                            <td> <a href="/article/view/<%= article.id %>">3.12.2</a></td>
+                            <td> <a href="/article/view/<%= article.id %>"><%= article.n_article %></a></td>
                             <td><%= article.title %></td>
                             <td>
                                 <% for(let tag of article.tags) { %>
@@ -99,7 +99,7 @@
                     <tbody>
                         <% for(let article of proposedArticles){ %>
                         <tr>
-                            <td> <a href="/article/view/<%= article.id %>">3.12.2</a></td>
+                            <td> <a href="/article/view/<%= article.id %>"><%= article.n_article %></a></td>
                             <td><%= article.title %></td>
                             <td>
                                 <% for(let tag of article.tags) { %>
@@ -141,7 +141,7 @@
                     <tbody>
                         <% for(let article of closedArticles){ %>
                         <tr>
-                            <td> <a href="/article/view/<%= article.id %>">3.12.2</a></td>
+                            <td> <a href="/article/view/<%= article.id %>"><%= article.n_article %></a></td>
                             <td><%= article.title %></td>
                             <td>
                                 <% for(let tag of article.tags) { %>
@@ -184,7 +184,7 @@
                     <tbody>
                         <% for(let article of starredArticles){ %>
                         <tr>
-                            <td> <a href="/article/view/<%= article.id %>">3.12.2</a></td>
+                            <td> <a href="/article/view/<%= article.id %>"><%= article.n_article %></a></td>
                             <td><%= article.title %></td>
                             <td>
                                 <% for(let tag of article.tags) { %>

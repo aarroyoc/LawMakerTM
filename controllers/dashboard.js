@@ -60,6 +60,7 @@ exports.DashboardController = class DashboardController {
         let articleId = uuidv4();
         articles.insertOne({
             "id" : articleId,
+            "n_article" : req.body.n_article,
             "status" : "proposed",
             "starred_by" : [],
             "tags" : req.body.tags.split(","),
