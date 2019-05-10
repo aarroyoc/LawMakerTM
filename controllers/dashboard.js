@@ -9,6 +9,9 @@ exports.DashboardController = class DashboardController {
     * Ver artículos propuestos
     * Proponer cambios de estructura
     * Notificaciones
+    * -----
+    * ESTADOS:
+    * PROPOSED -> OPEN -> VOTE -> CLOSE
     * */
     constructor(app){
         app.get("/dashboard",this.dashboard);

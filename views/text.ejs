@@ -1,0 +1,46 @@
+<%- include('helpers/header', {title: "Propuesta"}); %>
+<body>
+        <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#">Law Maker&trade;</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+    
+                <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                    <!--
+                    <ul class="navbar-nav mr-auto">
+                        
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Inicio </a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <button type="button" class="btn btn-outline-primary">
+                            Iniciar sesión
+                        </button>
+                    </form>
+                    -->
+                </div>
+            </div>
+        </nav>
+    
+        <main role="main" class="container">
+            <h1 class="title mt-2 mb-4">Propuesta</h1>
+            Para <a href="/article/view/<%= text.articleId %>">este artículo </a>
+            <% if(text.parent != null) { %>
+            Basado en <a href="/article/text/<%= text.parent %>">esta propuesta</a>
+            <% } %>
+            <textarea contenteditable="false"><%= text.text %></textarea>
+            Votos a favor: <%= text.votes_favour.length %> (<%= 100*text.votes_favour.length/(text.votes_favour.length+text.votes_against.length) %>%)<br>
+            Votos en contra: <%= text.votes_against.length %> (<%= 100*text.votes_against.length/(text.votes_favour.length+text.votes_against.length) %>%)<br>
+            <br>
+            <% for(let comment of text.comments) {  %>
+            <div>
+                <p><%= comment.text %></p> por <strong><%= comment.name %></strong>
+            </div>
+            <% } %>
+        </main>
+</body>
+<%- include('helpers/footer'); %>
