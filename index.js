@@ -1,4 +1,5 @@
 const express = require("express");
+const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const MongoClient = require('mongodb').MongoClient;
@@ -8,7 +9,10 @@ const dbName = 'LawMaker';
 
 let app = express();
 
+app.set('view engine', 'ejs');
+
 const { LoginController } = require("./controllers/login");
+const { DashboardController } = require("./controllers/dashboard");
 
 app.use(session({
     secret: "NatosWaor",
@@ -27,6 +31,11 @@ MongoClient.connect(url,{
     });
 
     new LoginController(app);
+    new DashboardController(app);
+
+    app.get("/",(req,res)=>{
+        res.render("home");
+    });
 
     app.listen(7575,()=>{
         console.log("Servidor iniciado en puerto 7575");

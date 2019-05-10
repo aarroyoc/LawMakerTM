@@ -68,19 +68,19 @@
 
         <div class="login d-flex justify-content-center">
             <div class="card">
-                <form class="login-box card-body">
+                <form action="/login" method="POST" class="login-box card-body">
 
                     <h4 class="card-title">Iniciar sesión</h4>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Correo electrónico</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                             placeholder="Introduzca su correo electrónico">
                         <small id="emailHelp" class="form-text text-muted">Inicio de sesión con propósitos
                             demostrativos.</small>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Contraseña</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
                     </div>
                     <button type="submit" class="btn btn-primary">Enviar</button>
                 </form>
