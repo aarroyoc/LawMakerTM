@@ -13,6 +13,8 @@ app.set('view engine', 'ejs');
 
 const { LoginController } = require("./controllers/login");
 const { DashboardController } = require("./controllers/dashboard");
+const { ArticleController } = require("./controllers/article");
+const { TextController } = require("./controllers/text");
 
 app.use(session({
     secret: "NatosWaor",
@@ -32,6 +34,8 @@ MongoClient.connect(url,{
 
     new LoginController(app);
     new DashboardController(app);
+    new ArticleController(app);
+    new TextController(app);
 
     app.get("/",(req,res)=>{
         res.render("home");

@@ -9,6 +9,9 @@ exports.DashboardController = class DashboardController {
     * Ver artículos propuestos
     * Proponer cambios de estructura
     * Notificaciones
+    * -----
+    * ESTADOS:
+    * PROPOSED -> OPEN -> VOTE -> CLOSE
     * */
     constructor(app){
         app.get("/dashboard",this.dashboard);
@@ -31,7 +34,8 @@ exports.DashboardController = class DashboardController {
                             openArticles: openArticles,
                             closedArticles: closedArticles,
                             proposedArticles: proposedArticles,
-                            starredArticles: starredArticles
+                            starredArticles: starredArticles,
+                            mail: req.session.mail
                         });
                     });
                 })
