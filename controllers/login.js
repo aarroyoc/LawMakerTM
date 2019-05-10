@@ -18,6 +18,7 @@ exports.LoginController = class LoginController {
             req.session.mail = "luciaespada@murcia.net";
             req.session.name = "Lucía Espada";
         }
+        res.redirect("/dashboard");
     }
 }
 
