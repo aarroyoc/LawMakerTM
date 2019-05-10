@@ -31,7 +31,8 @@ exports.DashboardController = class DashboardController {
                             openArticles: openArticles,
                             closedArticles: closedArticles,
                             proposedArticles: proposedArticles,
-                            starredArticles: starredArticles
+                            starredArticles: starredArticles,
+                            mail: req.session.mail
                         });
                     });
                 })

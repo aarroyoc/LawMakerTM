@@ -37,14 +37,53 @@
                     aria-controls="nav-proposed" aria-selected="false">Propuestos</a>
                 <a class="nav-item nav-link" id="nav-closed-tab" data-toggle="tab" href="#nav-closed" role="tab"
                     aria-controls="nav-closed" aria-selected="false">Cerrados</a>
-                <a class="nav-item nav-link" id="nav-following-tab" data-toggle="tab" href="#nav-following" role="tab"
-                    aria-controls="nav-following" aria-selected="false">En seguimiento</a>
+                <a class="nav-item nav-link" id="nav-starred-tab" data-toggle="tab" href="#nav-starred" role="tab"
+                    aria-controls="nav-starred" aria-selected="false">En seguimiento</a>
             </div>
         </nav>
         <div class="tab-content mt-3" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-need-work" role="tabpanel"
                 aria-labelledby="nav-need-work-tab">
-
+                <table id="proposed" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Art.</th>
+                            <th>Título</th>
+                            <th>Etiquetas</th>
+                            <th>Seguimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let article of openArticles){ %>
+                        <tr>
+                            <td> <a href="/article/view/<%= article.id %>">3.12.2</a></td>
+                            <td><%= article.title %></td>
+                            <td>
+                                <% for(let tag of article.tags) { %>
+                                <a href="#" class="badge badge-warning">#<%= tag %></a>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if(article.starred_by.indexOf(mail) > -1) { %>
+                                <a href="/notifyTo/<%= article.id %>/unfollow" type="button"
+                                    class="btn btn-warning">Dejar de seguir</a>
+                                <% } else {  %>
+                                <a href="/notifyTo/<%= article.id %>/follow" type="button"
+                                    class="btn btn-success">Seguir</a>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Art.</th>
+                            <th>Título</th>
+                            <th>Etiquetas</th>
+                            <th>Seguimiento</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
             <div class="tab-pane fade" id="nav-proposed" role="tabpanel" aria-labelledby="nav-proposed-tab">
                 <table id="proposed" class="table table-striped table-bordered" style="width:100%">
@@ -57,20 +96,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(let i=0;i<proposedArticles.length;i++){ %>
+                        <% for(let article of proposedArticles){ %>
                         <tr>
-                            <td> <a href="/article/view/<%= proposedArticles[i].id %>">3.12.2</a></td>
-                            <td><%= proposedArticles[i].title %></td>
+                            <td> <a href="/article/view/<%= article.id %>">3.12.2</a></td>
+                            <td><%= article.title %></td>
                             <td>
-                            <% for(let j=0;j<proposedArticles[i].tags.length;j++) { %>
-                                <a href="#" class="badge badge-warning">#<%= proposedArticles[i].tags[j] %></a>
-                            <% } %>
+                                <% for(let tag of article.tags) { %>
+                                <a href="#" class="badge badge-warning">#<%= tag %></a>
+                                <% } %>
                             </td>
                             <td>
-                                <% if(proposedArticles[i].starred_by.indexOf(mail) > -1) { %>
-                                <a href="/notifyTo/<%= proposedArticles[i].id %>/unfollow" type="button" class="btn btn-warning">Dejar de seguir</a>
+                                <% if(article.starred_by.indexOf(mail) > -1) { %>
+                                <a href="/notifyTo/<%= article.id %>/unfollow" type="button"
+                                    class="btn btn-warning">Dejar de seguir</a>
                                 <% } else {  %>
-                                <a href="/notifyTo/<%= proposedArticles[i].id %>/follow" type="button" class="btn btn-success">Seguir</a>
+                                <a href="/notifyTo/<%= article.id %>/follow" type="button"
+                                    class="btn btn-success">Seguir</a>
                                 <% } %>
                             </td>
                         </tr>
@@ -97,20 +138,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(let i=0;i<closedArticles.length;i++){ %>
+                        <% for(let article of closedArticles){ %>
                         <tr>
-                            <td> <a href="/article/view/<%= closedArticles[i].id %>">3.12.2</a></td>
-                            <td><%= closedArticles[i].title %></td>
+                            <td> <a href="/article/view/<%= article.id %>">3.12.2</a></td>
+                            <td><%= article.title %></td>
                             <td>
-                            <% for(let j=0;j<closedArticles[i].tags.length;j++) { %>
-                                <a href="#" class="badge badge-warning">#<%= closedArticles[i].tags[j] %></a>
-                            <% } %>
+                                <% for(let tag of article.tags) { %>
+                                <a href="#" class="badge badge-warning">#<%= tag %></a>
+                                <% } %>
                             </td>
                             <td>
-                                <% if(closedArticles[i].starred_by.indexOf(mail) > -1) { %>
-                                <a href="/notifyTo/<%= closedArticles[i].id %>/unfollow" type="button" class="btn btn-warning">Dejar de seguir</a>
+                                <% if(article.starred_by.indexOf(mail) > -1) { %>
+                                <a href="/notifyTo/<%= article.id %>/unfollow" type="button"
+                                    class="btn btn-warning">Dejar de seguir</a>
                                 <% } else {  %>
-                                <a href="/notifyTo/<%= closedArticles[i].id %>/follow" type="button" class="btn btn-success">Seguir</a>
+                                <a href="/notifyTo/<%= article.id %>/follow" type="button"
+                                    class="btn btn-success">Seguir</a>
                                 <% } %>
                             </td>
                         </tr>
@@ -127,8 +170,47 @@
                 </table>
             </div>
 
-            <div class="tab-pane fade" id="nav-followed" role="tabpanel" aria-labelledby="nav-followed-tab">
-
+            <div class="tab-pane fade" id="nav-starred" role="tabpanel" aria-labelledby="nav-starred-tab">
+                <table id="closed" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Art.</th>
+                            <th>Título</th>
+                            <th>Etiquetas</th>
+                            <th>Seguimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let article of starredArticles){ %>
+                        <tr>
+                            <td> <a href="/article/view/<%= article.id %>">3.12.2</a></td>
+                            <td><%= article.title %></td>
+                            <td>
+                                <% for(let tag of article.tags) { %>
+                                <a href="#" class="badge badge-warning">#<%= tag %></a>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if(article.starred_by.indexOf(mail) > -1) { %>
+                                <a href="/notifyTo/<%= article.id %>/unfollow" type="button"
+                                    class="btn btn-warning">Dejar de seguir</a>
+                                <% } else {  %>
+                                <a href="/notifyTo/<%= article.id %>/follow" type="button"
+                                    class="btn btn-success">Seguir</a>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Art.</th>
+                            <th>Título</th>
+                            <th>Etiquetas</th>
+                            <th>Seguimiento</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
     </main>
