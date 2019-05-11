@@ -67,20 +67,26 @@ exports.ArticleController = class ArticleController {
         let parent = req.query.parent;
         let db = req.mongo;
         let texts = db.collection("texts");
-        if(parent){
-            texts.findOne({id: parent},(err,text)=>{
+        let articles = db.collection("articles");
+        articles.findOne({id: articleId},(err,article)=>{
+            if(parent){
+                texts.findOne({id: parent},(err,text)=>{
+                    res.render("new_proposal",{
+                        articleId,
+                        text: text.text,
+                        parent,
+                        motivation: article.motivation
+                    });
+                });
+            }else{
                 res.render("new_proposal",{
                     articleId,
-                    text: text.text,
-                    parent
+                    parent: undefined,
+                    motivation: article.motivation
                 });
-            });
-        }else{
-            res.render("new_proposal",{
-                articleId,
-                parent: undefined
-            });
-        }
+            }
+        });
+        
 
     }
     addArticleComment(req, res) {
@@ -111,14 +117,26 @@ exports.ArticleController = class ArticleController {
             let db = req.mongo;
             let articleId = req.params.id;
             let articles = db.collection("articles");
-            // Pasamos a estado de enmienda. 
-            articles.updateOne({ "id": articleId },
+            // Seleccionar la mejor propuesta
+            let texts = db.collection("texts");
+            texts.find({articleId: articleId}).toArray((err,textArray)=>{
+                textArray.sort((a,b)=>{
+                    return a.votes_favour.length/a.votes_against.length - b.votes_favour.length/b.votes_against.length;
+                }).reverse();
+                            // Pasamos a estado de enmienda. 
+                articles.updateOne({ "id": articleId },
                 {
-                    $set: { "status": "amendment" }
+                    $set: { 
+                        "status": "amendment",
+                        "proposedText" : textArray[0].text
+                    }
                 }, (err, ok) => {
                     console.log(err)
                 });
-            res.redirect(`/article/view/${articleId}`);
+                res.redirect(`/article/view/${articleId}`);
+                
+            });
+
         }
     }
     openArticle(req, res) {

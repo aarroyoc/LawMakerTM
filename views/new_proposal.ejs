@@ -29,6 +29,8 @@
         <main role="main" class="container">
             <h1 class="title mt-2 mb-4">Nueva propuesta</h1>
             <form method="POST" action="/addProposal/<%= articleId %>">
+                <h4>Motivación</h4>
+                <textarea class="form-control" readonly><%= motivation %></textarea>
                 <% if(parent) { %>
                 <textarea name="text" class="form-control"><%= text %></textarea>
                 <input type="hidden" name="parent" value="<%= parent %>">

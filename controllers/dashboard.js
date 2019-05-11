@@ -31,13 +31,16 @@ exports.DashboardController = class DashboardController {
             articles.find({"status" : "close"}).toArray((err,closedArticles)=>{
                 articles.find({"status" : "proposed"}).toArray((err,proposedArticles)=>{
                     articles.find({"starred_by" : req.session.mail}).toArray((err,starredArticles)=>{
-                        // RENDERIZAR
-                        res.render("dashboard",{
-                            openArticles: openArticles,
-                            closedArticles: closedArticles,
-                            proposedArticles: proposedArticles,
-                            starredArticles: starredArticles,
-                            mail: req.session.mail
+                        articles.find({"status":"amendment"}).toArray((err,amendmentArticles)=>{
+                             // RENDERIZAR
+                            res.render("dashboard",{
+                                openArticles,
+                                closedArticles,
+                                proposedArticles,
+                                starredArticles,
+                                amendmentArticles,
+                                mail: req.session.mail
+                            });
                         });
                     });
                 })
