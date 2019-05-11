@@ -14,12 +14,14 @@ exports.TextController = class TextController {
             res.status(403).send("No autorizado");
         }
         let db = req.mongo;
-        let texts = db.collections("texts");
+        let texts = db.collection("texts");
         let textId = req.params.id;
         texts.findOne({id: textId},(err,text)=>{
             // RENDERIZAR
             res.render("text",{
-                text
+                text: text,
+                mail: req.session.mail,
+                name: req.session.name
             });
         });
     }
@@ -28,7 +30,7 @@ exports.TextController = class TextController {
             res.status(403).send("No autorizado");
         }
         let db = req.mongo;
-        let texts = db.collections("texts");
+        let texts = db.collection("texts");
         let textId = req.params.id;
         texts.updateOne({id: textId},{
             $push: { "comments" : {
@@ -46,7 +48,7 @@ exports.TextController = class TextController {
             res.status(403).send("No autorizado");
         }
         let db = req.mongo;
-        let texts = db.collections("texts");
+        let texts = db.collection("texts");
         let textId = req.params.id;
         let option = req.params.option;
         if(option == "yes"){

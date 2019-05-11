@@ -2,7 +2,7 @@
 <body>
         <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="#">Law Maker&trade;</a>
+                <a class="navbar-brand" href="/dashboard">Law Maker&trade;</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                     aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,19 +28,42 @@
     
         <main role="main" class="container">
             <h1 class="title mt-2 mb-4">Propuesta</h1>
-            Para <a href="/article/view/<%= text.articleId %>">este artículo </a>
+            Para <a href="/article/view/<%= text.articleId %>">este artículo </a><br>
             <% if(text.parent != null) { %>
             Basado en <a href="/article/text/<%= text.parent %>">esta propuesta</a>
             <% } %>
-            <textarea contenteditable="false"><%= text.text %></textarea>
+            <textarea class="form-control" readonly><%= text.text %></textarea>
             Votos a favor: <%= text.votes_favour.length %> (<%= 100*text.votes_favour.length/(text.votes_favour.length+text.votes_against.length) %>%)<br>
             Votos en contra: <%= text.votes_against.length %> (<%= 100*text.votes_against.length/(text.votes_favour.length+text.votes_against.length) %>%)<br>
             <br>
+            <% if(text.votes_favour.indexOf(mail) < 0 && text.votes_against.indexOf(mail) < 0) { %>
+                <a href="/article/voteText/<%= text.id %>/yes" class="btn btn-success">Votar a favor</a>
+                <a href="/article/voteText/<%= text.id %>/no" class="btn btn-danger">Votar en contra</a>
+            <% } else { %>
+                <span>Ya has votado</span>
+            <% } %>
+            <br>
             <% for(let comment of text.comments) {  %>
-            <div>
-                <p><%= comment.text %></p> por <strong><%= comment.name %></strong>
+            <div class="mt-2 card bg-light">
+                    <div class="card-header">
+                            <strong><%= comment.name %></strong>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><%= comment.text %></p>
+                    </div>
             </div>
             <% } %>
+            <br>
+            <form action="/addTextComment/<%= text.id %>" method="POST">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Comentario</span>
+                    </div>
+                    <textarea name="text" class="form-control" aria-label="With textarea"></textarea>
+                    <input type="hidden" name="name" value="<%= name %>">
+                </div>
+                <button type="submit" class="mt-2 btn btn-primary">Enviar comentario</button>
+            </form>
         </main>
 </body>
 <%- include('helpers/footer'); %>

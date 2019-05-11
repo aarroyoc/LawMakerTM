@@ -17,6 +17,7 @@ exports.DashboardController = class DashboardController {
         app.get("/dashboard",this.dashboard);
         app.post("/proposeArticle",this.proposeArticle);
         app.get("/notifyTo/:id/:sub",this.notifyTo);
+        app.get("/newArticle",this.newArticle);
     }
     dashboard(req,res){
         if(!req.session.mail){
@@ -43,6 +44,13 @@ exports.DashboardController = class DashboardController {
         });
     }
 
+    newArticle(req,res){
+        if(!req.session.mail){
+            res.status(403).send("No autorizado");
+        }
+        res.render("new_article");
+    }
+
     proposeArticle(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
@@ -52,9 +60,10 @@ exports.DashboardController = class DashboardController {
         let articleId = uuidv4();
         articles.insertOne({
             "id" : articleId,
+            "n_article" : req.body.n_article,
             "status" : "proposed",
             "starred_by" : [],
-            "tags" : [],
+            "tags" : req.body.tags.split(","),
             "title" : req.body.title,
             "motivation" : req.body.motivation,
             "votes_favour" : [],
@@ -63,7 +72,7 @@ exports.DashboardController = class DashboardController {
         },(err,res)=>{
 
         });
-        res.redirect(`/article/${articleId}`);
+        res.redirect(`/article/view/${articleId}`);
     }
 
     notifyTo(req,res){
