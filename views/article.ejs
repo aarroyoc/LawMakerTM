@@ -15,7 +15,15 @@
     </nav>
 
     <main role="main" class="container">
-        <h1 class="title mt-2 mb-4">Artículo (ADRI EL NÚMERO)</h1>
+        <h1 class="title mt-2 mb-4">Artículo (ADRI EL NÚMERO)
+            <% for (let tag of article.tags) { %>
+            <span class="badge badge-warning">#<%= tag %></span>
+            <% } %>
+        </h1>
+
+        <% if (req.session.admin == true && article.status == "open") { %>
+            <h2><a href="/article/close/<%= article.id %>" class="btn btn-danger btn-lg" role="button" >Finalizar votación</a></h2>
+        <% } %>
 
         <% if (article.status == "proposed") { %>
         <div class="alert alert-primary" role="alert">
@@ -25,7 +33,7 @@
         <div class="alert alert-warning" role="alert">
             Artículo abierto.
         </div>
-        <% } else if (article.status == "closed") { %>
+        <% } else if (article.status == "close") { %>
         <div class="alert alert-success" role="alert">
             Artículo cerrado.
         </div>
@@ -54,7 +62,7 @@
             </div>
         </div>
 
-        <% if (true) {//(article.status == "open") { %>
+        <% if (article.status == "open") { %>
         <div class="mt-3 card bg-light">
             <div class="card-header">
                 <div class="h4">Texto</div>

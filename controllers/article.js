@@ -10,29 +10,32 @@ exports.ArticleController = class ArticleController {
     * [ADMIN] Cambiar de estado
     * Filtros de palabras
     */
-    constructor(app){
-        app.get("/article/view/:id",this.article);
-        app.post("/addProposal/:id",this.addProposal);
-        app.post("/addArticleComment/:id",this.addArticleComment);
+    constructor(app) {
+        app.get("/article/view/:id", this.article);
+        app.post("/addProposal/:id", this.addProposal);
+        app.post("/addArticleComment/:id", this.addArticleComment);
+        app.get("/article/close/:id", this.closeArticle); // Cierra votaciones y pasamos a enmiendas.
     }
-    article(req,res){
-        if(!req.session.mail){
+    article(req, res) {
+        if (!req.session.mail) {
             res.status(403).send("No autorizado");
         }
         let db = req.mongo;
         let articleId = req.params.id;
         let articles = db.collection("articles");
-        articles.findOne({id: articleId},(err,ttt)=>{
+        articles.findOne({ id: articleId }, (err, ttt) => {
             let texts = db.collection("texts");
-            texts.find({articleId: articleId}).toArray((err,texts)=>{
+            texts.find({ articleId: articleId }).toArray((err, texts) => {
                 res.render("article", {
-                    article: texts
+                    article: ttt,
+                    texts,
+                    req
                 });
-            });    
+            });
         });
     }
-    addProposal(req,res){
-        if(!req.session.mail){
+    addProposal(req, res) {
+        if (!req.session.mail) {
             res.status(403).send("No autorizado");
         }
         let db = req.mongo;
@@ -50,22 +53,40 @@ exports.ArticleController = class ArticleController {
         });
         res.redirect(`/article/text/${textId}`);
     }
-    addArticleComment(req,res){
-        if(!req.session.mail){
+    addArticleComment(req, res) {
+        if (!req.session.mail) {
             res.status(403).send("No autorizado");
         }
         let db = req.mongo;
         let articleId = req.params.id;
         let articles = db.collection("articles");
-        articles.updateOne({id: articleId},{
-            $push: { "comments" : {
-                text: req.body.text,
-                name: req.body.name
-            }}
-        },(err,ok)=>{
+        articles.updateOne({ id: articleId }, {
+            $push: {
+                "comments": {
+                    text: req.body.text,
+                    name: req.body.name
+                }
+            }
+        }, (err, ok) => {
 
         });
         res.redirect(`/article/view/${articleId}`);
     }
-
+    closeArticle(req, res) {
+        if (!req.session.admin) {
+            res.status(403).send("No autorizado. Sólo un administrador puede cerrar una votación.");
+        } else {
+            let db = req.mongo;
+            let articleId = req.params.id;
+            let articles = db.collection("articles");
+            // Pasamos a estado de enmienda. 
+            articles.updateOne({ "id": articleId },
+                {
+                    $set: { "status": "amendment" }
+                }, (err, ok) => {
+                    console.log(err)
+                });
+            res.redirect(`/article/view/${articleId}`);
+        }
+    }
 }

@@ -1,8 +1,8 @@
 exports.LoginController = class LoginController {
-    constructor(app){
-        app.post("/login",this.login);
+    constructor(app) {
+        app.post("/login", this.login);
     }
-    login(req,res) {
+    login(req, res) {
         let db = req.mongo;
         /*let users = db.collection("users");
         users
@@ -10,16 +10,19 @@ exports.LoginController = class LoginController {
         .toArray(function(err,users){
 
         });*/
-        if(req.body.email == "josefrancisco@valladolid.es"){
+        if (req.body.email == "josefrancisco@valladolid.es") {
             req.session.mail = "josefrancisco@valladolid.es";
             req.session.name = "José Francisco";
+            req.session.admin = true;
         }
-        if(req.body.email == "luciaespada@murcia.net"){
+        if (req.body.email == "luciaespada@murcia.net") {
             req.session.mail = "luciaespada@murcia.net";
             req.session.name = "Lucía Espada";
+            req.session.admin = false;
         }
         res.redirect("/dashboard");
     }
 }
+
 
 
