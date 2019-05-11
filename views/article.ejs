@@ -15,16 +15,18 @@
     </nav>
 
     <main role="main" class="container">
-        <h1 class="title mt-2 mb-4">Artículo (ADRI EL NÚMERO)
+        <h1 class="title mt-2 mb-4">Artículo <%= article.n_article %>
             <% for (let tag of article.tags) { %>
             <span class="badge badge-warning">#<%= tag %></span>
             <% } %>
         </h1>
 
         <% if (req.session.admin == true && article.status == "open") { %>
-            <h2><a href="/article/close/<%= article.id %>" class="btn btn-danger btn-lg" role="button" >Finalizar votación</a></h2>
+        <h2><a href="/article/close/<%= article.id %>" class="btn btn-danger btn-lg" role="button">Finalizar
+                votación</a></h2>
         <% } %>
 
+        <!-- STATUS BEGIN -->
         <% if (article.status == "proposed") { %>
         <div class="alert alert-primary" role="alert">
             Artículo propuesto.
@@ -37,19 +39,43 @@
         <div class="alert alert-success" role="alert">
             Artículo cerrado.
         </div>
+        <% } else if (article.status == "amendment") { %>
+        <div class="alert alert-info" role="alert">
+            Artículo cerrado.
+        </div>
         <% } %>
+        <!-- STATUS END -->
+
 
         <% if (article.status == "proposed") { %>
         <div class="mb-4 stats">
             <span class="mr-1 badge badge-secondary">
-                Número de respuestas <span class="badge badge-light">33</span>
+                Número de votos <span class="badge badge-light">
+                    <%= article.votes_favour.length +  article.votes_against.length %>
+                </span>
             </span>
             <span class="mr-1 badge badge-success">
-                Votos a favor <span class="badge badge-light">3</span>
+                Votos a favor <span
+                    class="badge badge-light"><%= (article.votes_favour.length / (article.votes_favour.length +  article.votes_against.length )) * 100 %>%</span>
             </span>
             <span class="mr-1 badge badge-danger">
-                Votos en contra <span class="badge badge-light">73</span>
+                Votos en contra <span
+                    class="badge badge-light"><%= (article.votes_against.length / (article.votes_favour.length +  article.votes_against.length )) * 100 %>%</span>
             </span>
+        </div>
+        <% } %>
+
+
+        <%# Si no se ha votado, entonces dejamos votar :D  %>
+        <% if (!article.votes_against.includes(req.session.email) &&
+            !article.votes_favour.includes(req.session.email) ) { %>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
         </div>
         <% } %>
 
