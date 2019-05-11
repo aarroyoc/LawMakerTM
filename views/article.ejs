@@ -17,20 +17,64 @@
     <main role="main" class="container">
         <h1 class="title mt-2 mb-4">Artículo (ADRI EL NÚMERO)</h1>
 
-        <div class="card bg-light">
+        <% if (article.status == "proposed") { %>
+        <div class="alert alert-primary" role="alert">
+            Artículo propuesto.
+        </div>
+        <% } else if (article.status == "open") { %>
+        <div class="alert alert-warning" role="alert">
+            Artículo abierto.
+        </div>
+        <% } else if (article.status == "closed") { %>
+        <div class="alert alert-success" role="alert">
+            Artículo cerrado.
+        </div>
+        <% } %>
+
+        <% if (article.status == "proposed") { %>
+        <div class="mb-4 stats">
+            <span class="mr-1 badge badge-secondary">
+                Número de respuestas <span class="badge badge-light">33</span>
+            </span>
+            <span class="mr-1 badge badge-success">
+                Votos a favor <span class="badge badge-light">3</span>
+            </span>
+            <span class="mr-1 badge badge-danger">
+                Votos en contra <span class="badge badge-light">73</span>
+            </span>
+        </div>
+        <% } %>
+
+        <div class="card bg-secondary text-white">
             <div class="card-header">
-                    Motivación
+                <div class="h4">Motivación</div>
             </div>
             <div class="card-body">
                 <p class="card-text"><%= article.motivation %></p>
             </div>
-
-            <!-------------------------------------------------
-                [ ] Num. Votos favor, contra.
-                [ ] 
-
-            -------------------------------------------------->
         </div>
+
+        <% if (true) {//(article.status == "open") { %>
+        <div class="mt-3 card bg-light">
+            <div class="card-header">
+                <div class="h4">Texto</div>
+                <div class="stats">
+                    <span class="mr-1 badge badge-secondary">
+                        Número de respuestas <span class="badge badge-light">33</span>
+                    </span>
+                    <span class="mr-1 badge badge-success">
+                        Votos a favor <span class="badge badge-light">3</span>
+                    </span>
+                    <span class="mr-1 badge badge-danger">
+                        Votos en contra <span class="badge badge-light">73</span>
+                    </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-text"><%= article.text %></p>
+            </div>
+        </div>
+        <% } %>
 
     </main>
 
