@@ -13,7 +13,7 @@ exports.ArticleController = class ArticleController {
     constructor(app) {
         app.get("/article/view/:id", this.article);
         app.post("/addProposal/:id", this.addProposal);
-        app.get("/newProposal/:id",this.newProposal);
+        app.get("/newProposal/:id", this.newProposal);
         app.post("/addArticleComment/:id", this.addArticleComment);
         app.get("/article/close/:id", this.closeArticle); // Cierra votaciones y pasamos a enmiendas.
         app.get("/article/open/:id", this.openArticle); // Cierra votaciones y pasamos a enmiendas.
@@ -55,10 +55,12 @@ exports.ArticleController = class ArticleController {
             votes_favour: [],
             votes_against: [],
             comments: []
+        }, (err, ok) => {
+            res.redirect(`/article/text/${textId}`);
         });
-        res.redirect(`/article/text/${textId}`);
+
     }
-    newProposal(req,res){
+    newProposal(req, res) {
         if (!req.session.mail) {
             res.status(403).send("No autorizado");
             return;
@@ -68,25 +70,25 @@ exports.ArticleController = class ArticleController {
         let db = req.mongo;
         let texts = db.collection("texts");
         let articles = db.collection("articles");
-        articles.findOne({id: articleId},(err,article)=>{
-            if(parent){
-                texts.findOne({id: parent},(err,text)=>{
-                    res.render("new_proposal",{
+        articles.findOne({ id: articleId }, (err, article) => {
+            if (parent) {
+                texts.findOne({ id: parent }, (err, text) => {
+                    res.render("new_proposal", {
                         articleId,
                         text: text.text,
                         parent,
                         motivation: article.motivation
                     });
                 });
-            }else{
-                res.render("new_proposal",{
+            } else {
+                res.render("new_proposal", {
                     articleId,
                     parent: undefined,
                     motivation: article.motivation
                 });
             }
         });
-        
+
 
     }
     addArticleComment(req, res) {
@@ -105,9 +107,9 @@ exports.ArticleController = class ArticleController {
                 }
             }
         }, (err, ok) => {
-
+            res.redirect(`/article/view/${articleId}`);
         });
-        res.redirect(`/article/view/${articleId}`);
+
     }
     closeArticle(req, res) {
         if (!req.session.admin) {
@@ -119,22 +121,23 @@ exports.ArticleController = class ArticleController {
             let articles = db.collection("articles");
             // Seleccionar la mejor propuesta
             let texts = db.collection("texts");
-            texts.find({articleId: articleId}).toArray((err,textArray)=>{
-                textArray.sort((a,b)=>{
-                    return a.votes_favour.length/a.votes_against.length - b.votes_favour.length/b.votes_against.length;
+            texts.find({ articleId: articleId }).toArray((err, textArray) => {
+                textArray.sort((a, b) => {
+                    return a.votes_favour.length / a.votes_against.length - b.votes_favour.length / b.votes_against.length;
                 }).reverse();
-                            // Pasamos a estado de enmienda. 
+                // Pasamos a estado de enmienda. 
                 articles.updateOne({ "id": articleId },
-                {
-                    $set: { 
-                        "status": "amendment",
-                        "proposedText" : textArray[0].text
-                    }
-                }, (err, ok) => {
-                    console.log(err)
-                });
-                res.redirect(`/article/view/${articleId}`);
-                
+                    {
+                        $set: {
+                            "status": "amendment",
+                            "proposedText": textArray[0].text
+                        }
+                    }, (err, ok) => {
+                        console.log(err);
+                        res.redirect(`/article/view/${articleId}`);
+                    });
+
+
             });
 
         }
@@ -153,8 +156,9 @@ exports.ArticleController = class ArticleController {
                     $set: { "status": "open" }
                 }, (err, ok) => {
                     console.log(err)
+                    res.redirect(`/article/view/${articleId}`);
                 });
-            res.redirect(`/article/view/${articleId}`);
+
         }
     }
     vote(req, res) {
@@ -173,6 +177,7 @@ exports.ArticleController = class ArticleController {
                     $push: { "votes_favour": req.session.mail }
                 }, (err, ok) => {
                     console.log(err)
+                    res.redirect(`/article/view/${articleId}`);
                 });
         } else {
             articles.updateOne({ "id": articleId },
@@ -180,9 +185,10 @@ exports.ArticleController = class ArticleController {
                     $push: { "votes_against": req.session.mail }
                 }, (err, ok) => {
                     console.log(err)
+                    res.redirect(`/article/view/${articleId}`);
                 });
         }
-        res.redirect(`/article/view/${articleId}`);
+
 
     }
 }
