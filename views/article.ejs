@@ -67,14 +67,14 @@
 
 
         <%# Si no se ha votado, entonces dejamos votar :D  %>
-        <% if (!article.votes_against.includes(req.session.email) &&
-            !article.votes_favour.includes(req.session.email) ) { %>
-
+        <% if (!article.votes_against.includes(req.session.mail) &&
+            !article.votes_favour.includes(req.session.mail) &&
+            article.status == "proposed") { %>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
                 <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="/article/vote/yes/<%= article.id %>" class="btn btn-success">Aceptar</a>
+                <a href="/article/vote/no/<%= article.id %>" class="btn btn-danger">Rechazar</a>
             </div>
         </div>
         <% } %>
