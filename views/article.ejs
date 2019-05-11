@@ -110,6 +110,29 @@
         </div>
         <% } %>
 
+        <br>
+        <% for(let comment of article.comments) {  %>
+        <div class="mt-2 card bg-light">
+                <div class="card-header">
+                        <strong><%= comment.name %></strong>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><%= comment.text %></p>
+                </div>
+        </div>
+        <% } %>
+        <br>
+        <form action="/addArticleComment/<%= article.id %>" method="POST">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Comentario</span>
+                </div>
+                <textarea name="text" class="form-control"></textarea>
+                <input type="hidden" name="name" value="<%= req.session.name %>">
+            </div>
+            <button type="submit" class="mt-2 btn btn-primary">Enviar comentario</button>
+        </form>
+
     </main>
 
 
