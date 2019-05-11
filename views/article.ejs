@@ -72,14 +72,28 @@
             article.status == "proposed") { %>
         <div class="card">
             <div class="card-body">
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">Votar: </p>
                 <a href="/article/vote/yes/<%= article.id %>" class="btn btn-success">Aceptar</a>
                 <a href="/article/vote/no/<%= article.id %>" class="btn btn-danger">Rechazar</a>
             </div>
         </div>
-        <% } %>
+        <% } else if (article.votes_against.includes(req.session.mail) ||
+            article.votes_favour.includes(req.session.mail) ) { 
+                if (article.votes_favour.includes(req.session.mail)) { %>
+        <div class="card border-success">
+            <div class="card-body">
+                <p class="card-text">Usted ha votado a favor</p>
+            </div>
+        </div>
+        <% } else { %>
+        <div class="card border-danger">
+            <div class="card-body">
+                <p class="card-text">Usted ha votado en contra</p>
+            </div>
+        </div>
+        <% } }%>
 
-        <div class="card bg-secondary text-white">
+        <div class="card mt-4 bg-secondary text-white">
             <div class="card-header">
                 <div class="h4">Motivación</div>
             </div>
@@ -113,12 +127,12 @@
         <br>
         <% for(let comment of article.comments) {  %>
         <div class="mt-2 card bg-light">
-                <div class="card-header">
-                        <strong><%= comment.name %></strong>
-                </div>
-                <div class="card-body">
-                    <p class="card-text"><%= comment.text %></p>
-                </div>
+            <div class="card-header">
+                <strong><%= comment.name %></strong>
+            </div>
+            <div class="card-body">
+                <p class="card-text"><%= comment.text %></p>
+            </div>
         </div>
         <% } %>
         <br>
