@@ -96,7 +96,8 @@ exports.ArticleController = class ArticleController {
     }
     vote(req, res) {
         if (!req.session.mail) {
-            res.send(403).status("No está autorizado.")
+            res.send(403).status("No está autorizado.");
+            return;
         }
         let db = req.mongo;
         let articleId = req.params.id;
@@ -106,14 +107,14 @@ exports.ArticleController = class ArticleController {
 
             articles.updateOne({ "id": articleId },
                 {
-                    $push: { "vote_favour": req.session.mail }
+                    $push: { "votes_favour": req.session.mail }
                 }, (err, ok) => {
                     console.log(err)
                 });
         } else {
             articles.updateOne({ "id": articleId },
                 {
-                    $push: { "vote_against": req.session.mail }
+                    $push: { "votes_against": req.session.mail }
                 }, (err, ok) => {
                     console.log(err)
                 });
