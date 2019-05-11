@@ -21,6 +21,11 @@
             <% } %>
         </h1>
 
+        <% if (req.session.admin == true && article.status == "proposed") { %>
+        <h2><a href="/article/open/<%= article.id %>" class="btn btn-danger btn-lg" role="button">Abrir a discusión</a>
+        </h2>
+        <% } %>
+
         <% if (req.session.admin == true && article.status == "open") { %>
         <h2><a href="/article/close/<%= article.id %>" class="btn btn-danger btn-lg" role="button">Finalizar
                 votación</a></h2>

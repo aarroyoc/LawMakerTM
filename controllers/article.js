@@ -15,6 +15,7 @@ exports.ArticleController = class ArticleController {
         app.post("/addProposal/:id", this.addProposal);
         app.post("/addArticleComment/:id", this.addArticleComment);
         app.get("/article/close/:id", this.closeArticle); // Cierra votaciones y pasamos a enmiendas.
+        app.get("/article/open/:id", this.openArticle); // Cierra votaciones y pasamos a enmiendas.
         app.get("/article/vote/:vote/:id", this.vote);
     }
     article(req, res) {
@@ -88,6 +89,24 @@ exports.ArticleController = class ArticleController {
             articles.updateOne({ "id": articleId },
                 {
                     $set: { "status": "amendment" }
+                }, (err, ok) => {
+                    console.log(err)
+                });
+            res.redirect(`/article/view/${articleId}`);
+        }
+    }
+    openArticle(req, res) {
+        if (!req.session.admin) {
+            res.status(403).send("No autorizado. Sólo un administrador puede cerrar una votación.");
+            return;
+        } else {
+            let db = req.mongo;
+            let articleId = req.params.id;
+            let articles = db.collection("articles");
+            // Pasamos a estado de enmienda. 
+            articles.updateOne({ "id": articleId },
+                {
+                    $set: { "status": "open" }
                 }, (err, ok) => {
                     console.log(err)
                 });
