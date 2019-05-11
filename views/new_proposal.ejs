@@ -1,15 +1,16 @@
 <%- include('helpers/header', {title: "Propuesta"}); %>
+
 <body>
-        <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="/dashboard">Law Maker&trade;</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-                    aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-    
-                <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-                    <!--
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">Law Maker&trade;</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <!--
                     <ul class="navbar-nav mr-auto">
                         
                         <li class="nav-item active">
@@ -22,22 +23,23 @@
                         </button>
                     </form>
                     -->
-                </div>
             </div>
-        </nav>
-    
-        <main role="main" class="container">
-            <h1 class="title mt-2 mb-4">Nueva propuesta</h1>
-            <form method="POST" action="/addProposal/<%= articleId %>">
-                <h4>Motivación</h4>
-                <textarea class="form-control" readonly><%= motivation %></textarea>
-                <% if(parent) { %>
-                <textarea name="text" class="form-control"><%= text %></textarea>
-                <input type="hidden" name="parent" value="<%= parent %>">
-                <% } else { %>
-                <textarea name="text" class="form-control"></textarea>
-                <% } %>
-                <button type="submit" class="mt-2 btn btn-primary">Crear propuesta</button>
-            </form>
-        </main>
-        <%- include('helpers/footer'); %>
+        </div>
+    </nav>
+    <main role="main" class="container">
+        <h1 class="title mt-2 mb-4">Nueva propuesta</h1>
+        <form method="POST" action="/addProposal/<%= articleId %>">
+
+            <h4 class="mb-3">Motivación</h4>
+            <textarea class="form-control mb-4" readonly><%= motivation %></textarea>
+
+            <% if(parent) { %>
+            <textarea name="text" class="form-control mt-4"><%= text %></textarea>
+            <input type="hidden" name="parent" value="<%= parent %>">
+            <% } else { %>
+            <textarea name="text" class="form-control" placeholder="Escriba aquí el texto del artículo."></textarea>
+            <% } %>
+            <button type="submit" class="mt-4 btn btn-primary" >Crear propuesta</button>
+        </form>
+    </main>
+    <%- include('helpers/footer'); %>
