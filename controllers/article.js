@@ -15,6 +15,7 @@ exports.ArticleController = class ArticleController {
         app.post("/addProposal/:id", this.addProposal);
         app.post("/addArticleComment/:id", this.addArticleComment);
         app.get("/article/close/:id", this.closeArticle); // Cierra votaciones y pasamos a enmiendas.
+        app.get("/article/vote/:vote/:id", this.vote);
     }
     article(req, res) {
         if (!req.session.mail) {
@@ -75,6 +76,7 @@ exports.ArticleController = class ArticleController {
     closeArticle(req, res) {
         if (!req.session.admin) {
             res.status(403).send("No autorizado. Sólo un administrador puede cerrar una votación.");
+            return;
         } else {
             let db = req.mongo;
             let articleId = req.params.id;
@@ -88,5 +90,32 @@ exports.ArticleController = class ArticleController {
                 });
             res.redirect(`/article/view/${articleId}`);
         }
+    }
+    vote(req, res) {
+        if (!req.session.mail) {
+            res.send(403).status("No está autorizado.")
+        }
+        let db = req.mongo;
+        let articleId = req.params.id;
+        let articles = db.collection("articles");
+
+        if (req.params.vote == "yes") {
+
+            articles.updateOne({ "id": articleId },
+                {
+                    $push: { "vote_favour": req.session.mail }
+                }, (err, ok) => {
+                    console.log(err)
+                });
+        } else {
+            articles.updateOne({ "id": articleId },
+                {
+                    $push: { "vote_against": req.session.mail }
+                }, (err, ok) => {
+                    console.log(err)
+                });
+        }
+        res.redirect(`/article/view/${articleId}`);
+
     }
 }
