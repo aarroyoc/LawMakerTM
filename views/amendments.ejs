@@ -1,0 +1,63 @@
+<%- include('helpers/header', {title: "Artículo"}); %>
+
+<body>
+    <link href="/diffview.css" rel="stylesheet">
+    <script src="/diffview.js"></script>
+    <script src="/difflib.js"></script>
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">Law Maker&trade;</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            </div>
+        </div>
+    </nav>
+
+    <main role="main" class="container">
+        <h1 class="title mt-2 mb-4">Enmiendas artículo <%= article.n_article %></h1>
+        <% if(admin) {%>
+        <a href="/closeAmendments" class="btn btn-warning">Cerrar enmiendas</a>
+        <% } %>
+        <textarea class="form-control" readonly><%= article.proposedText %></textarea>
+        <% for(let i=0;i<article.amendments.length;i++) { %>
+        <div class="mt-2 card bg-light">
+                <div class="card-header">
+                    <% if(article.amendments[i].votes_favour.indexOf(mail) < 0 && article.amendments[i].votes_against.indexOf(mail) < 0) { %>
+                    <a href="/article/amendments/<%= article.id %>/<%= i%>/yes" class="btn btn-success">A favor</a>
+                    <a href="/article/amendments/<%= article.id %>/<%= i%>/no" class="btn btn-danger">En contra</a>
+                    <% } else { %>
+                    <p>Ya has votado</p>
+                    <% } %>
+                </div>
+                <div class="card-body">
+
+                    <p class="card-text" id="diff-<%= i %>">
+
+                    </p> 
+                        <script>
+                        var base = difflib.stringAsLines(`<%= article.proposedText%>`);
+                        var newtxt = difflib.stringAsLines(`<%= article.amendments[i].text %>`);
+                        var sm = new difflib.SequenceMatcher(base,newtxt);
+                        var opcodes = sm.get_opcodes();
+                        var box = diffview.buildView({
+                            baseTextLines: base,
+                            newTextLines: newtxt,
+                            opcodes: opcodes,
+                            // set the display titles for each resource
+                            baseTextName: "Original",
+                            newTextName: "Enmendado",
+                            contextSize: null,
+                            viewType: 0
+                        });
+                        document.getElementById("diff-<%= i %>").appendChild(box);
+                        </script>
+                </div>
+        </div>
+        <% } %>
+    </main>
+
+    <%- include('helpers/footer'); %>

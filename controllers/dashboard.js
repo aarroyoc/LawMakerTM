@@ -68,7 +68,9 @@ exports.DashboardController = class DashboardController {
             "motivation" : req.body.motivation,
             "votes_favour" : [],
             "votes_against" : [],
-            "comments" : []
+            "comments" : [],
+            "amendments" : [],
+            "proposedText" : ""
         },(err,res)=>{
 
         });
