@@ -2,6 +2,8 @@ exports.AmendmentsController = class AmendmentsController{
     constructor(app){
         app.get("/article/amendments/:id",this.amendments);
         app.get("/article/amendments/:id/:n/:option",this.vote);
+        app.post("/article/amendments/:id",this.submitAmendment);
+        app.get("/closeAmendments/:id",this.closeAmendments);
     }
     amendments(req,res){
         if(!req.session.mail){
@@ -32,20 +34,56 @@ exports.AmendmentsController = class AmendmentsController{
         if(option == "yes"){
             articles.findOne({id: articleId},(err,ok)=>{
                 ok.amendments[amendmentId].votes_favour.push(req.session.mail);
-                articles.updateOne({id: articleId},ok,(err,ok)=>{
+                articles.replaceOne({id: articleId},ok,(err,ok)=>{
 
                 });
             });
         }
         if(option == "no"){
             articles.findOne({id: articleId},(err,ok)=>{
-                console.log(ok);
                 ok.amendments[amendmentId].votes_against.push(req.session.mail);
-                articles.updateOne({id: articleId},ok,(err,ok)=>{
+                articles.replaceOne({id: articleId},ok,(err,ok)=>{
 
                 });
             });
         }
         res.redirect(`/article/amendments/${articleId}`);
+    }
+    submitAmendment(req,res){
+        if(!req.session.mail){
+            res.status(403).send("No autorizado");
+            return;
+        }
+        let db = req.mongo;
+        let articles = db.collection("articles");
+        let articleId = req.params.id;
+        articles.updateOne({id: articleId},{$push: {
+            "amendments" : {
+                text: req.body.amendment,
+                votes_favour: [],
+                votes_against: []
+            }
+        }},(err,ok)=>{
+
+        });
+        res.redirect(`/article/amendments/${articleId}`);
+    }
+
+    closeAmendments(req,res){
+        if(!req.session.mail){
+            res.status(403).send("No autorizado");
+            return;
+        }
+        let db = req.mongo;
+        let articles = db.collection("articles");
+        let articleId = req.params.id;
+        articles.updateOne({id: articleId},{
+            $set: {
+                "status" : "review"
+            }
+        },(err,ok)=>{
+
+        });
+        res.redirect(`/article/finalclose/${articleId}`);
     }
 }
