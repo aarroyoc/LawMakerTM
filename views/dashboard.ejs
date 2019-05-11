@@ -237,7 +237,7 @@
                                     <% } %>
                                 </td>
                                 <td>
-                                    <% if(article.amendment_by.indexOf(mail) > -1) { %>
+                                    <% if(article.starred_by.indexOf(mail) > -1) { %>
                                     <a href="/notifyTo/<%= article.id %>/unfollow" type="button"
                                         class="btn btn-warning">Dejar de seguir</a>
                                     <% } else {  %>
