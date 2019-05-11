@@ -17,6 +17,7 @@ exports.LoginController = class LoginController {
         if(req.body.email == "luciaespada@murcia.net"){
             req.session.mail = "luciaespada@murcia.net";
             req.session.name = "Lucía Espada";
+            req.session.admin = true;
         }
         res.redirect("/dashboard");
     }
