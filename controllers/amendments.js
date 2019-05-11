@@ -3,7 +3,7 @@ exports.AmendmentsController = class AmendmentsController{
         app.get("/article/amendments/:id",this.amendments);
         app.get("/article/amendments/:id/:n/:option",this.vote);
         app.post("/article/amendments/:id",this.submitAmendment);
-        app.get("/closeAmendments",this.closeAmendments);
+        app.get("/closeAmendments/:id",this.closeAmendments);
     }
     amendments(req,res){
         if(!req.session.mail){
@@ -34,7 +34,6 @@ exports.AmendmentsController = class AmendmentsController{
         if(option == "yes"){
             articles.findOne({id: articleId},(err,ok)=>{
                 ok.amendments[amendmentId].votes_favour.push(req.session.mail);
-                console.log(ok);
                 articles.replaceOne({id: articleId},ok,(err,ok)=>{
 
                 });
@@ -42,7 +41,6 @@ exports.AmendmentsController = class AmendmentsController{
         }
         if(option == "no"){
             articles.findOne({id: articleId},(err,ok)=>{
-                console.log(ok);
                 ok.amendments[amendmentId].votes_against.push(req.session.mail);
                 articles.replaceOne({id: articleId},ok,(err,ok)=>{
 
@@ -72,7 +70,7 @@ exports.AmendmentsController = class AmendmentsController{
     }
 
     closeAmendments(req,res){
-        if(!req.session.mail || !req.admin){
+        if(!req.session.mail){
             res.status(403).send("No autorizado");
             return;
         }
