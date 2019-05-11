@@ -29,6 +29,7 @@
         <% if (req.session.admin == true && article.status == "open") { %>
         <h2><a href="/article/close/<%= article.id %>" class="btn btn-danger btn-lg" role="button">Finalizar
                 votación</a></h2>
+        <h3><a href="/newProposal/<%= article.id %>" class="btn btn-secondary">Crear propuesta</a></h3>
         <% } %>
 
         <!-- STATUS BEGIN -->

@@ -13,6 +13,7 @@ exports.ArticleController = class ArticleController {
     constructor(app) {
         app.get("/article/view/:id", this.article);
         app.post("/addProposal/:id", this.addProposal);
+        app.get("/newProposal/:id",this.newProposal);
         app.post("/addArticleComment/:id", this.addArticleComment);
         app.get("/article/close/:id", this.closeArticle); // Cierra votaciones y pasamos a enmiendas.
         app.get("/article/open/:id", this.openArticle); // Cierra votaciones y pasamos a enmiendas.
@@ -43,7 +44,7 @@ exports.ArticleController = class ArticleController {
             return;
         }
         let db = req.mongo;
-        let texts = db.collections("texts");
+        let texts = db.collection("texts");
         let articleId = req.params.id;
         let textId = uuidv4();
         texts.insertOne({
@@ -56,6 +57,31 @@ exports.ArticleController = class ArticleController {
             comments: []
         });
         res.redirect(`/article/text/${textId}`);
+    }
+    newProposal(req,res){
+        if (!req.session.mail) {
+            res.status(403).send("No autorizado");
+            return;
+        }
+        let articleId = req.params.id;
+        let parent = req.query.parent;
+        let db = req.mongo;
+        let texts = db.collection("texts");
+        if(parent){
+            texts.findOne({id: parent},(err,text)=>{
+                res.render("new_proposal",{
+                    articleId,
+                    text: text.text,
+                    parent
+                });
+            });
+        }else{
+            res.render("new_proposal",{
+                articleId,
+                parent: undefined
+            });
+        }
+
     }
     addArticleComment(req, res) {
         if (!req.session.mail) {
