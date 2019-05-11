@@ -19,6 +19,7 @@ exports.ArticleController = class ArticleController {
     article(req, res) {
         if (!req.session.mail) {
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let articleId = req.params.id;
@@ -37,6 +38,7 @@ exports.ArticleController = class ArticleController {
     addProposal(req, res) {
         if (!req.session.mail) {
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let texts = db.collections("texts");
@@ -56,6 +58,7 @@ exports.ArticleController = class ArticleController {
     addArticleComment(req, res) {
         if (!req.session.mail) {
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let articleId = req.params.id;
@@ -75,6 +78,7 @@ exports.ArticleController = class ArticleController {
     closeArticle(req, res) {
         if (!req.session.admin) {
             res.status(403).send("No autorizado. Sólo un administrador puede cerrar una votación.");
+            return;
         } else {
             let db = req.mongo;
             let articleId = req.params.id;

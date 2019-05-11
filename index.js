@@ -24,10 +24,11 @@ app.use(session({
     saveUninitialized: true,
 }));
 app.use(express.static("static"));
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
 
 MongoClient.connect(url,{
-    poolSize: 10
+    poolSize: 10,
+    useNewUrlParser: true
 }, function(err, client) {
     app.use((req,res,next)=>{
         req.mongo = client.db(dbName);

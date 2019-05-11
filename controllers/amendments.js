@@ -8,6 +8,7 @@ exports.AmendmentsController = class AmendmentsController{
     amendments(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let articleId = req.params.id;

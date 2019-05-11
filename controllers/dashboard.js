@@ -22,6 +22,7 @@ exports.DashboardController = class DashboardController {
     dashboard(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let articles = db.collection("articles");
@@ -47,6 +48,7 @@ exports.DashboardController = class DashboardController {
     newArticle(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
+            return;
         }
         res.render("new_article");
     }
@@ -54,6 +56,7 @@ exports.DashboardController = class DashboardController {
     proposeArticle(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let articles = db.collection("articles");
@@ -80,6 +83,7 @@ exports.DashboardController = class DashboardController {
     notifyTo(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
+            return;
         }
         let id = req.params.id;
         let sub = req.params.sub;

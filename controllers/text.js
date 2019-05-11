@@ -12,6 +12,7 @@ exports.TextController = class TextController {
     text(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let texts = db.collection("texts");
@@ -28,6 +29,7 @@ exports.TextController = class TextController {
     addTextComment(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let texts = db.collection("texts");
@@ -46,6 +48,7 @@ exports.TextController = class TextController {
     vote(req,res){
         if(!req.session.mail){
             res.status(403).send("No autorizado");
+            return;
         }
         let db = req.mongo;
         let texts = db.collection("texts");
